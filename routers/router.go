@@ -21,9 +21,25 @@ func init() {
 			),
 		),
 		beego.NSNamespace("/user",
-			beego.NSInclude(
+			// get all users
+			beego.NSInclude(&controllers.UserController{}),
+
+			beego.NSRouter("/",
 				&controllers.UserController{},
+				"get:GetAll",
 			),
+
+			// add new user
+			beego.NSRouter("/", &controllers.UserController{}, "post:Post"),
+
+			// update an existing user
+			beego.NSRouter("/:uid", &controllers.UserController{}, "put:Put"),
+
+			// delete a user
+			beego.NSRouter("/:uid", &controllers.UserController{}, "delete:Delete"),
+
+			// get a user with id
+			beego.NSRouter("/:uid", &controllers.UserController{}, "get:Get"),
 		),
 	)
 	beego.AddNamespace(ns)
